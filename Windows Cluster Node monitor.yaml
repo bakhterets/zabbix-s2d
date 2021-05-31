@@ -1,0 +1,1114 @@
+zabbix_export:
+  version: '5.2'
+  date: '2021-01-13T16:47:32Z'
+  groups:
+    -
+      name: 'Windows Cluster Servers'
+  templates:
+    -
+      template: 'Windows Cluster Node monitor'
+      name: 'Windows Cluster Node monitor'
+      groups:
+        -
+          name: 'Windows Cluster Servers'
+      applications:
+        -
+          name: 'Cluster CSV File System'
+        -
+          name: 'Cluster CSV Performance'
+        -
+          name: 'Cluster node'
+      items:
+        -
+          name: 'Get node state'
+          key: 's2d["GetNodeInfo"]'
+          delay: 3m
+          applications:
+            -
+              name: 'Cluster node'
+          valuemap:
+            name: '0:No, 1:Yes'
+          triggers:
+            -
+              expression: '{last()}=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: '{last()}=1'
+              name: 'Node state has been changed, current state is {ITEM.LASTVALUE1}'
+              priority: HIGH
+              manual_close: 'YES'
+      discovery_rules:
+        -
+          name: 'Cluster CSV File System Name discovery'
+          key: 's2d["DiscoveryCSVName"]'
+          delay: 15m
+          filter:
+            conditions:
+              -
+                macro: '{#CSVNAME}'
+                formulaid: A
+          lifetime: 7d
+          description: 'Discovers Cluster Shared Volume file system names.'
+          item_prototypes:
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Read Bytes/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Read Bytes/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: Bytes/sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Read Latency Custom'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Read Latency",100]'
+              delay: '1m;60s/1-5,11:00-18:00'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Read Latency'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Read Latency",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Read Queue Length'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Read Queue Length",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Reads/sec Custom'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Reads/sec",100]'
+              delay: '1m;60s/1-5,11:00-18:00'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: Bytes/sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Reads/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Reads/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: Bytes/sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Split Reads'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Split Reads",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Split Reads/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Split Reads/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: Bytes/sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Split Writes'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Split Writes",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: /sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Split Writes/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Split Writes/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: /sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Write Bytes/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Write Bytes/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: Bytes/sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Write Latency Custom'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Write Latency",100]'
+              delay: '1m;60s/1-5,11:00-18:00'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Write Latency'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Write Latency",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Write Queue Length'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Write Queue Length",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Writes/sec Custom'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Writes/sec",100]'
+              delay: '1m;60s/1-5,11:00-18:00'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: /sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Writes/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Writes/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: /sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Read Bytes/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Read Bytes/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: Bytes/sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+              trigger_prototypes:
+                -
+                  expression: '{avg(60,0)}>500'
+                  name: 'Cluster CSV File System {#CSVNAME} Redirected Read Bytes/sec'
+                  url: 'http://blogs.msdn.com/b/clustering/archive/2014/06/05/10531462.aspx'
+                  status: DISABLED
+                  discover: NO_DISCOVER
+                  priority: INFO
+                  description: 'Cluster File System is using redirected IO instead of direct IO.'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Read Latency'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Read Latency",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Read Queue Length'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Read Queue Length",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Reads/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Reads/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: Bytes/sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+              trigger_prototypes:
+                -
+                  expression: '{avg(60,0)}>500'
+                  name: 'Cluster CSV File System {#CSVNAME} Redirected Reads/sec'
+                  url: 'http://blogs.msdn.com/b/clustering/archive/2014/06/05/10531462.aspx'
+                  status: DISABLED
+                  discover: NO_DISCOVER
+                  priority: INFO
+                  description: 'Cluster File System is using redirected IO instead of direct IO.'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Reads Avg. Queue Length'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Reads Avg. Queue Length",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Write Bytes/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Write Bytes/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: Bytes/sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+              trigger_prototypes:
+                -
+                  expression: '{avg(60,0)}>500'
+                  name: 'Cluster CSV File System {#CSVNAME} Redirected Write Bytes/sec'
+                  url: 'http://blogs.msdn.com/b/clustering/archive/2014/06/05/10531462.aspx'
+                  status: DISABLED
+                  discover: NO_DISCOVER
+                  priority: INFO
+                  description: 'Cluster File System is using redirected IO instead of direct IO.'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Write Latency'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Write Latency",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Write Queue Length'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Write Queue Length",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Writes/sec'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Writes/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: /sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+              trigger_prototypes:
+                -
+                  expression: '{avg(60,0)}>500'
+                  name: 'Cluster CSV File System {#CSVNAME} Redirected Writes/sec'
+                  url: 'http://blogs.msdn.com/b/clustering/archive/2014/06/05/10531462.aspx'
+                  status: DISABLED
+                  discover: NO_DISCOVER
+                  priority: INFO
+                  description: 'Cluster File System is using redirected IO instead of direct IO.'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} Redirected Writes Avg. Queue Length'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Writes Avg. Queue Length",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Volume Pause Count - Disk'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Volume Pause Count - Disk",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Volume Pause Count - Network'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Volume Pause Count - Network",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Volume Pause Count - Other'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Volume Pause Count - Other",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV File System {#CSVNAME} IO Volume Pause Count - Total'
+              key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Volume Pause Count - Total",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV Volume Manager {#CSVNAME} Direct IO Failure Redirection'
+              key: 'perf_counter["\Cluster CSV Volume Manager({#CSVNAME})\Direct IO Failure Redirection",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV Volume Manager {#CSVNAME} Direct IO Failure Redirection/sec'
+              key: 'perf_counter["\Cluster CSV Volume Manager({#CSVNAME})\Direct IO Failure Redirection/sec",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: /sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV Volume Manager {#CSVNAME} IO Read/sec - Redirected'
+              key: 'perf_counter["\Cluster CSV Volume Manager({#CSVNAME})\IO Read/sec - Redirected",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: /sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV Volume Manager {#CSVNAME} IO Read Bytes/sec - Redirected'
+              key: 'perf_counter["\Cluster CSV Volume Manager({#CSVNAME})\IO Read Bytes/sec - Redirected",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: /sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV Volume Manager {#CSVNAME} IO Write/sec - Redirected'
+              key: 'perf_counter["\Cluster CSV Volume Manager({#CSVNAME})\IO Write/sec - Redirected",300]'
+              history: 30d
+              trends: 90d
+              units: /sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+            -
+              name: 'Cluster CSV Volume Manager {#CSVNAME} IO Write Bytes/sec - Redirected'
+              key: 'perf_counter["\Cluster CSV Volume Manager({#CSVNAME})\IO Write Bytes/sec - Redirected",300]'
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: Bytes/sec
+              applications:
+                -
+                  name: 'Cluster CSV Performance'
+          graph_prototypes:
+            -
+              name: 'Cluster Shared {#CSVNAME} IO and Redirected Bytes/sec'
+              graph_items:
+                -
+                  color: 00C800
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Read Bytes/sec",300]'
+                -
+                  sortorder: '1'
+                  color: FF3333
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Write Bytes/sec",300]'
+                -
+                  sortorder: '2'
+                  color: 0000C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Read Bytes/sec",300]'
+                -
+                  sortorder: '3'
+                  color: C800C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Write Bytes/sec",300]'
+            -
+              name: 'Cluster Shared {#CSVNAME} IO and Redirected Latency'
+              graph_items:
+                -
+                  color: 00C800
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Read Latency",300]'
+                -
+                  sortorder: '1'
+                  color: FF3333
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Write Latency",300]'
+                -
+                  sortorder: '2'
+                  color: 0000C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Read Latency",300]'
+                -
+                  sortorder: '3'
+                  color: C800C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Write Latency",300]'
+            -
+              name: 'Cluster Shared {#CSVNAME} IO and Redirected Operations/sec'
+              graph_items:
+                -
+                  color: 00C800
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Reads/sec",300]'
+                -
+                  sortorder: '1'
+                  color: FF3333
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Split Reads/sec",300]'
+                -
+                  sortorder: '2'
+                  color: 0000C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Split Writes/sec",300]'
+                -
+                  sortorder: '3'
+                  color: C800C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Writes/sec",300]'
+                -
+                  sortorder: '4'
+                  color: 00C8C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Reads/sec",300]'
+                -
+                  sortorder: '5'
+                  color: C8C800
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Writes/sec",300]'
+            -
+              name: 'Cluster Shared {#CSVNAME} IO and Redirected Queue Length'
+              graph_items:
+                -
+                  color: 00C800
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Read Queue Length",300]'
+                -
+                  sortorder: '1'
+                  color: FF3333
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\IO Write Queue Length",300]'
+                -
+                  sortorder: '2'
+                  color: 0000C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Read Queue Length",300]'
+                -
+                  sortorder: '3'
+                  color: C800C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Write Queue Length",300]'
+                -
+                  sortorder: '4'
+                  color: 00C8C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Reads Avg. Queue Length",300]'
+                -
+                  sortorder: '5'
+                  color: C8C800
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Redirected Writes Avg. Queue Length",300]'
+            -
+              name: 'Cluster Shared {#CSVNAME} IO Volume Pause Count'
+              graph_items:
+                -
+                  color: 00C800
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Volume Pause Count - Disk",300]'
+                -
+                  sortorder: '1'
+                  color: FF3333
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Volume Pause Count - Network",300]'
+                -
+                  sortorder: '2'
+                  color: 0000C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Volume Pause Count - Other",300]'
+                -
+                  sortorder: '3'
+                  color: C800C8
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'perf_counter["\Cluster CSV File System({#CSVNAME})\Volume Pause Count - Total",300]'
+        -
+          name: 'Cluster CSV Path discovery'
+          key: 's2d["DiscoveryCSVPath"]'
+          delay: 15m
+          filter:
+            conditions:
+              -
+                macro: '{#CSVPATH}'
+                formulaid: A
+          lifetime: 7d
+          item_prototypes:
+            -
+              name: 'Cluster CSV File System {#CSVPATH} pfree forecast 90days'
+              type: CALCULATED
+              key: 'vfs.fs.forecast.size[{#CSVPATH},pfree]'
+              delay: 30s
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: '%'
+              params: 'forecast("vfs.fs.size[{#CSVPATH},pfree]",30d,,90d)'
+              applications:
+                -
+                  name: 'Cluster CSV File System'
+            -
+              name: 'Cluster CSV File System {#CSVPATH} free'
+              key: 'vfs.fs.size[{#CSVPATH},free]'
+              delay: 300s
+              history: 30d
+              trends: 90d
+              units: b
+              applications:
+                -
+                  name: 'Cluster CSV File System'
+              preprocessing:
+                -
+                  type: MULTIPLIER
+                  parameters:
+                    - '1'
+            -
+              name: 'Cluster CSV File System {#CSVPATH} pfree'
+              key: 'vfs.fs.size[{#CSVPATH},pfree]'
+              delay: 300s
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: '%'
+              applications:
+                -
+                  name: 'Cluster CSV File System'
+              trigger_prototypes:
+                -
+                  expression: '{avg(15m)}<5'
+                  name: 'Free disk space "{#CSVPATH}"'
+                  priority: DISASTER
+                -
+                  expression: '{avg(15m)}<10'
+                  name: 'Free disk space "{#CSVPATH}"'
+                  priority: HIGH
+            -
+              name: 'Cluster CSV File System {#CSVPATH} pused'
+              key: 'vfs.fs.size[{#CSVPATH},pused]'
+              delay: 300s
+              history: 30d
+              trends: 90d
+              value_type: FLOAT
+              units: '%'
+              applications:
+                -
+                  name: 'Cluster CSV File System'
+            -
+              name: 'Cluster CSV File System {#CSVPATH} total'
+              key: 'vfs.fs.size[{#CSVPATH},total]'
+              delay: 300s
+              history: 30d
+              trends: 90d
+              units: b
+              applications:
+                -
+                  name: 'Cluster CSV File System'
+              preprocessing:
+                -
+                  type: MULTIPLIER
+                  parameters:
+                    - '1'
+            -
+              name: 'Cluster CSV File System {#CSVPATH} used'
+              key: 'vfs.fs.size[{#CSVPATH},used]'
+              delay: 300s
+              history: 30d
+              trends: 90d
+              units: b
+              applications:
+                -
+                  name: 'Cluster CSV File System'
+              preprocessing:
+                -
+                  type: MULTIPLIER
+                  parameters:
+                    - '1'
+          graph_prototypes:
+            -
+              name: 'Graph utilizing the disk "{#CSVPATH}"'
+              graph_items:
+                -
+                  drawtype: BOLD_LINE
+                  color: 00C800
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'vfs.fs.size[{#CSVPATH},total]'
+                -
+                  sortorder: '1'
+                  drawtype: GRADIENT_LINE
+                  color: C80000
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'vfs.fs.size[{#CSVPATH},used]'
+                -
+                  sortorder: '2'
+                  drawtype: DASHED_LINE
+                  color: 2774A4
+                  item:
+                    host: 'Windows Cluster Node monitor'
+                    key: 'vfs.fs.forecast.size[{#CSVPATH},pfree]'
+        -
+          name: 'Discovery physical disks'
+          key: 's2d["DiscoveryPDisks"]'
+          delay: 1h
+          lifetime: 3d
+          item_prototypes:
+            -
+              name: 'HealthStatus physical disk'
+              key: 's2d["GetPDiskInfo","{#UNIQUEID}","HealthStatus"]'
+              delay: 10m
+              description: '#TypeName: System.Int32'
+              application_prototypes:
+                -
+                  name: 'Physical Disk'
+              valuemap:
+                name: 'HealthStatus (S2d,PD,VD)'
+              trigger_prototypes:
+                -
+                  expression: '{last()}=2'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has been changed to Unhealthy on {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  priority: HIGH
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+                -
+                  expression: '{last()}=5'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has been changed to Unknown on {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+                -
+                  expression: '{last()}=1'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has been changed to Warning on {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+                -
+                  expression: '{last()}=10'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has not been received for {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+            -
+              name: 'Media Type physical disk'
+              key: 's2d["GetPDiskInfo","{#UNIQUEID}","MediaType"]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: '#TypeName: System.String'
+              application_prototypes:
+                -
+                  name: 'Physical Disk'
+            -
+              name: 'Operational Status physical disk'
+              key: 's2d["GetPDiskInfo","{#UNIQUEID}","OperationalStatus"]'
+              delay: 10m
+              trends: '0'
+              value_type: CHAR
+              description: '#TypeName: System.String'
+              application_prototypes:
+                -
+                  name: 'Physical Disk'
+            -
+              name: 'Serial Number physical disk'
+              key: 's2d["GetPDiskInfo","{#UNIQUEID}","SerialNumber"]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: '#TypeName: System.String'
+              application_prototypes:
+                -
+                  name: 'Physical Disk'
+            -
+              name: 'Size physical disk'
+              key: 's2d["GetPDiskInfo","{#UNIQUEID}","Size"]'
+              delay: 1d
+              units: b
+              description: '#TypeName: System.UInt64'
+              application_prototypes:
+                -
+                  name: 'Physical Disk'
+            -
+              name: 'Usage physical disk'
+              key: 's2d["GetPDiskInfo","{#UNIQUEID}","Usage"]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: '#TypeName: System.String'
+              application_prototypes:
+                -
+                  name: 'Physical Disk'
+        -
+          name: 'Discovery storage pools'
+          key: 's2d["DiscoveryPools"]'
+          delay: 1h
+          lifetime: 3d
+          item_prototypes:
+            -
+              name: 'AllocatedSize storage pool'
+              key: 's2d["GetPoolInfo","{#UNIQUEID}","AllocatedSize"]'
+              delay: 10m
+              units: b
+              description: '#TypeName: System.UInt64'
+              application_prototypes:
+                -
+                  name: 'Storage Pool'
+            -
+              name: 'Friendly Name storage pool'
+              key: 's2d["GetPoolInfo","{#UNIQUEID}","FriendlyName"]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: '#TypeName: System.String'
+              application_prototypes:
+                -
+                  name: 'Storage Pool'
+            -
+              name: 'HealthStatus storage pool'
+              key: 's2d["GetPoolInfo","{#UNIQUEID}","HealthStatus"]'
+              delay: 10m
+              description: '#TypeName: System.Int32'
+              application_prototypes:
+                -
+                  name: 'Storage Pool'
+              valuemap:
+                name: 'HealthStatus (S2d,PD,VD)'
+              trigger_prototypes:
+                -
+                  expression: '{last()}=2'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has been changed to Unhealthy on {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  priority: HIGH
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+                -
+                  expression: '{last()}=5'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has been changed to Unknown on {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+                -
+                  expression: '{last()}=1'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has been changed to Warning on {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+                -
+                  expression: '{last()}=10'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has not been received for {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+            -
+              name: 'IsReadOnly storage pool'
+              key: 's2d["GetPoolInfo","{#UNIQUEID}","IsReadOnly"]'
+              delay: 10m
+              description: '#TypeName: System.Boolean'
+              application_prototypes:
+                -
+                  name: 'Storage Pool'
+              preprocessing:
+                -
+                  type: BOOL_TO_DECIMAL
+                  parameters:
+                    - ''
+              trigger_prototypes:
+                -
+                  expression: '{last()}=1'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Storage pool with id: {#UNIQUEID} changed state to ReadOnly'
+                  priority: HIGH
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+            -
+              name: 'OperationalStatus storage pool'
+              key: 's2d["GetPoolInfo","{#UNIQUEID}","OperationalStatus"]'
+              delay: 10m
+              trends: '0'
+              value_type: CHAR
+              description: '#TypeName: System.String'
+              application_prototypes:
+                -
+                  name: 'Storage Pool'
+            -
+              name: 'ReadOnlyReason storage pool'
+              key: 's2d["GetPoolInfo","{#UNIQUEID}","ReadOnlyReason"]'
+              delay: 10m
+              trends: '0'
+              value_type: CHAR
+              description: '#TypeName: System.String'
+              application_prototypes:
+                -
+                  name: 'Storage Pool'
+            -
+              name: 'Size storage pool'
+              key: 's2d["GetPoolInfo","{#UNIQUEID}","Size"]'
+              delay: 1d
+              units: b
+              description: '#TypeName: System.UInt64'
+              application_prototypes:
+                -
+                  name: 'Storage Pool'
+        -
+          name: 'Discovery resource type'
+          key: 's2d["DiscoveryRT"]'
+          delay: 1h
+          lifetime: 3d
+          item_prototypes:
+            -
+              name: 'Get resource status'
+              key: 's2d["GetRTInfo","{#RTNAME}","State"]'
+              delay: 3m
+              applications:
+                -
+                  name: 'Cluster node'
+              valuemap:
+                name: 'Windows cluster resource type'
+              trigger_prototypes:
+                -
+                  expression: '{last()}<>1'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=1'
+                  name: 'State {#RTNAME} has been changed, current state is {ITEM.LASTVALUE1}'
+                  opdata: '{ITEM.LASTVALUE1}'
+                  priority: HIGH
+                  manual_close: 'YES'
+        -
+          name: 'Discovery virtual disks'
+          key: 's2d["DiscoveryVDisks"]'
+          delay: 1h
+          lifetime: 3d
+          item_prototypes:
+            -
+              name: 'Health Status virtual disk'
+              key: 's2d["GetVDiskInfo","{#UNIQUEID}","HealthStatus"]'
+              delay: 10m
+              description: '#TypeName: System.Int32'
+              application_prototypes:
+                -
+                  name: 'Virtual Disk'
+              valuemap:
+                name: 'HealthStatus (S2d,PD,VD)'
+              trigger_prototypes:
+                -
+                  expression: '{last()}=2'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has been changed to Unhealthy on {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  priority: HIGH
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+                -
+                  expression: '{last()}=5'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has been changed to Unknown on {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+                -
+                  expression: '{last()}=1'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has been changed to Warning on {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+                -
+                  expression: '{last()}=10'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: '{last()}=0'
+                  name: 'Health status has not been received for {#UNIQUEID} state is {ITEM.LASTVALUE}'
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: Severity
+                      value: important
+            -
+              name: 'Operational Status virtual disk'
+              key: 's2d["GetVDiskInfo","{#UNIQUEID}","OperationalStatus"]'
+              delay: 10m
+              trends: '0'
+              value_type: CHAR
+              description: '#TypeName: System.String'
+              application_prototypes:
+                -
+                  name: 'Virtual Disk'
+            -
+              name: 'Size virtual disk'
+              key: 's2d["GetVDiskInfo","{#UNIQUEID}","Size"]'
+              delay: 1d
+              units: b
+              description: '#TypeName: System.UInt64'
+              application_prototypes:
+                -
+                  name: 'Virtual Disk'
+              valuemap:
+                name: 'HealthStatus (S2d,PD,VD)'
+            -
+              name: 'Usage virtual disk'
+              key: 's2d["GetVDiskInfo","{#UNIQUEID}","Usage"]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: '#TypeName: System.String'
+              application_prototypes:
+                -
+                  name: 'Virtual Disk'
+  value_maps:
+    -
+      name: '0:No, 1:Yes'
+      mappings:
+        -
+          value: '0'
+          newvalue: 'No'
+        -
+          value: '1'
+          newvalue: 'Yes'
+    -
+      name: 'HealthStatus (S2d,PD,VD)'
+      mappings:
+        -
+          value: '0'
+          newvalue: Healthy
+        -
+          value: '1'
+          newvalue: Warning
+        -
+          value: '2'
+          newvalue: Unhealthy
+        -
+          value: '5'
+          newvalue: Unknown
+        -
+          value: '10'
+          newvalue: 'Switch Default'
+    -
+      name: 'Windows cluster resource type'
+      mappings:
+        -
+          value: '0'
+          newvalue: Failed
+        -
+          value: '1'
+          newvalue: Online
+        -
+          value: '2'
+          newvalue: 'Some error'
